@@ -1,5 +1,8 @@
 pipeline {
-    agent any// {
+    node {
+        label 'maven'
+    }
+    //agent {
         
         // docker {
         //     image 'maven:3-alpine'
