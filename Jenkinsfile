@@ -5,12 +5,13 @@ pipeline {
             args '-v /root/.m2:/root/.m2'
         }
     }
-    options {
-        skipStagesAfterUnstable()
-    }
+    // options {
+    //     skipStagesAfterUnstable()
+    // }
     stages {
         stage('Build') {
             steps {
+                ls -la
                 sh 'mvn -B -DskipTests clean package'
             }
         }
@@ -24,10 +25,10 @@ pipeline {
                 }
             }
         }
-        stage('Deliver') { 
-            steps {
-                sh './jenkins/scripts/deliver.sh' 
-            }
-        }
+        // stage('Deliver') { 
+        //     steps {
+        //         sh './jenkins/scripts/deliver.sh' 
+        //     }
+        // }
     }
 }
