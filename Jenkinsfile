@@ -53,8 +53,12 @@ pipeline {
     }
     stage("Sonarqube Quality Gate") {
         when {
-            branch 'production'
-            environment name: 'DEPLOY_TO', value: 'production'
+            beforeInput true
+            branch 'master'
+        }
+        input {
+            message "Deploy to production?"
+            id "simple-input"
         }
         steps {
             // script {
