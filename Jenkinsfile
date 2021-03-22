@@ -37,9 +37,16 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
+            when { 
+                expression {
+                    return Deploy
+                }
+            }
             steps {
-                withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar') {
-                    sh "mvn -B clean deploy sonar:sonar"
+                when (BRANCH_NAME != 'dev') {
+                    withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar') {
+                        sh "mvn -B clean deploy sonar:sonar"
+                    }
                 }
 
                     //sh "${JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/bin/sonar-scanner " +
