@@ -76,8 +76,8 @@ pipeline {
                     docker.withRegistry( "${registryUrl}/${appName}", "${registryCredential}" ) {
                         dockerImage.push('latest')
                         dockerImage.push("$BUILD_NUMBER")
-                        docker rmi ${registry}/${appName}:$BUILD_NUMBER
-                        docker rmi ${registry}/${appName}:latest
+                        //docker rmi ${registry}/${appName}:$BUILD_NUMBER
+                        //docker rmi ${registry}/${appName}:latest
                     }
                 }
             }
