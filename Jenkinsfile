@@ -38,7 +38,9 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar') 
+                withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar') {
+                    sh "mvn -B clean deploy sonar:sonar"
+                }
 
                     //sh "${JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/bin/sonar-scanner " +
                     //"-Dsonar.host.url=http://192.168.56.110:9000/ " +
