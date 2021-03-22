@@ -37,12 +37,13 @@ pipeline {
             }
         }
 
-    stage('Sonarqube') {
+    stage('Sonarqube Analysis') {
         environment {
             scannerHome = tool 'sonar'
         }
         steps {
             withSonarQubeEnv('sonar') {
+                //sh 'mvn clean package sonar:sonar'
                 sh "${scannerHome}/bin/sonar-scanner " +
                     "-Dsonar.projectName=${JOB_BASE_NAME} " +
                     "-Dsonar.projectVersion=1.$BUILD_NUMBER " +
@@ -50,46 +51,29 @@ pipeline {
             }
         }
     }
-    stage("Quality Gate") {
+    stage("Sonarqube Quality Gate") {
         steps {
-            timeout(time: 10, unit: 'MINUTES') {
-                waitForQualityGate abortPipeline: true
+            when (BRANCH_NAME != 'dev') {
+                // def qg = waitForQualityGate()
+                // if (qg.status != 'OK') {
+                //     error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                // }
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
     }
-//         stage('SonarQube Analysis') {
-//             when { 
-//                 expression {
-//                     return SonarQube Analysis
-//                 }
-//             }
-//             steps {
-//                 when (BRANCH_NAME != 'dev') {
-//                     withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar') {
-//                         sh "mvn -B clean deploy sonar:sonar"
-//                     }
-//                 }
 
-//                     //sh "${JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/bin/sonar-scanner " +
-//                     //"-Dsonar.host.url=http://192.168.56.110:9000/ " +
-//                     //"-Dsonar.projectName=${JOB_BASE_NAME} " +
-//                     //"-Dsonar.projectVersion=1.$BUILD_NUMBER " +
-//                     //"-Dsonar.projectKey=${JOB_BASE_NAME}:app " //+
-//                    // "-Dsonar.sources=. " +
-//                    // "-Dsonar.projectBaseDir=${JENKINS_HOME}/workspace/K8s/K8s_test_pipeline/APP/"
-//                     //'-Dsonar.language=html '
 
-//                     //sh 'cat ${JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/conf/sonar-scanner.properties'
-//                 //}
-//             }
-//         }
+
         
 //         stage("Quality Gate") {
 //             when { 
 //                 expression {
 //                     return Quality Gate
 //                 }
-//             }
+//             } 
 //             steps {
 // //                timeout(time: 1, unit: 'HOURS') {
 //                     // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
