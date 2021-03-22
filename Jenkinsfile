@@ -39,7 +39,7 @@ pipeline {
         stage('SonarQube Analysis') {
             when { 
                 expression {
-                    return RunSonar
+                    return SonarQube Analysis
                 }
             }
             steps {
@@ -66,7 +66,7 @@ pipeline {
         stage("Quality Gate") {
             when { 
                 expression {
-                    return RunGate
+                    return Quality Gate
                 }
             }
             steps {
