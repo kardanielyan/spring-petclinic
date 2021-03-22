@@ -39,16 +39,16 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar') {
-                    sh "${jenkinsHome}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/bin/sonar-scanner " +
+                    sh "${JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/bin/sonar-scanner " +
                     "-Dsonar.host.url=http://192.168.56.110:9000/ " +
                     "-Dsonar.projectName=${JOB_BASE_NAME} " +
                     "-Dsonar.projectVersion=1.$BUILD_NUMBER " +
                     "-Dsonar.projectKey=${JOB_BASE_NAME}:app " //+
                    // "-Dsonar.sources=. " +
-                   // "-Dsonar.projectBaseDir=${jenkinsHome}/workspace/K8s/K8s_test_pipeline/APP/"
+                   // "-Dsonar.projectBaseDir=${JENKINS_HOME}/workspace/K8s/K8s_test_pipeline/APP/"
                     //'-Dsonar.language=html '
 
-                    //sh 'cat ${jenkinsHome}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/conf/sonar-scanner.properties'
+                    //sh 'cat ${JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/conf/sonar-scanner.properties'
                 }
             }
         }
