@@ -41,9 +41,9 @@ pipeline {
                 withSonarQubeEnv('sonar') {
                     sh "${jenkinsHome}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/bin/sonar-scanner " +
                     "-Dsonar.host.url=http://192.168.56.110:9000/ " +
-                    "-Dsonar.projectName=${appName} " +
+                    "-Dsonar.projectName=${JOB_BASE_NAME} " +
                     "-Dsonar.projectVersion=1.$BUILD_NUMBER " +
-                    "-Dsonar.projectKey=${appName}:app " //+
+                    "-Dsonar.projectKey=${JOB_BASE_NAME}:app " //+
                    // "-Dsonar.sources=. " +
                    // "-Dsonar.projectBaseDir=${jenkinsHome}/workspace/K8s/K8s_test_pipeline/APP/"
                     //'-Dsonar.language=html '
@@ -66,18 +66,18 @@ pipeline {
         stage('Docker Build') {
             steps{
                 script {
-                    dockerImage = docker.build("${registry}/${appName}" + ":$BUILD_NUMBER", " -f Dockerfile .")
+                    dockerImage = docker.build("${registry}/${JOB_BASE_NAME}" + ":$BUILD_NUMBER", " -f Dockerfile .")
                 }
             }
         }
         stage('Docker Push') {
             steps{
                 script {
-                    docker.withRegistry( "${registryUrl}/${appName}", "${registryCredential}" ) {
+                    docker.withRegistry( "${registryUrl}/${JOB_BASE_NAME}", "${registryCredential}" ) {
                         dockerImage.push('latest')
                         dockerImage.push("$BUILD_NUMBER")
-                        //docker rmi ${registry}/${appName}:$BUILD_NUMBER
-                        //docker rmi ${registry}/${appName}:latest
+                        //docker rmi ${registry}/${JOB_BASE_NAME}:$BUILD_NUMBER
+                        //docker rmi ${registry}/${JOB_BASE_NAME}:latest
                     }
                 }
             }
