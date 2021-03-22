@@ -48,6 +48,10 @@ pipeline {
                     "-Dsonar.projectVersion=1.$BUILD_NUMBER " +
                     "-Dsonar.projectKey=${JOB_BASE_NAME}:app "
             }
+        }
+    }
+    stage("Quality Gate") {
+        steps {
             timeout(time: 10, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
             }
@@ -95,25 +99,25 @@ pipeline {
 // //                }
 //             }
 //         }
-        stage('Docker Build') {
-            steps{
-                script {
-                    dockerImage = docker.build("${registry}/${JOB_BASE_NAME}" + ":$BUILD_NUMBER", " -f Dockerfile .")
-                }
-            }
-        }
-        stage('Docker Push') {
-            steps{
-                script {
-                    docker.withRegistry( "${registryUrl}/${JOB_BASE_NAME}", "${registryCredential}" ) {
-                        dockerImage.push('latest')
-                        dockerImage.push("$BUILD_NUMBER")
-                        //docker rmi ${registry}/${JOB_BASE_NAME}:$BUILD_NUMBER
-                        //docker rmi ${registry}/${JOB_BASE_NAME}:latest
-                    }
-                }
-            }
-        }
+        // stage('Docker Build') {
+        //     steps{
+        //         script {
+        //             dockerImage = docker.build("${registry}/${JOB_BASE_NAME}" + ":$BUILD_NUMBER", " -f Dockerfile .")
+        //         }
+        //     }
+        // }
+        // stage('Docker Push') {
+        //     steps{
+        //         script {
+        //             docker.withRegistry( "${registryUrl}/${JOB_BASE_NAME}", "${registryCredential}" ) {
+        //                 dockerImage.push('latest')
+        //                 dockerImage.push("$BUILD_NUMBER")
+        //                 //docker rmi ${registry}/${JOB_BASE_NAME}:$BUILD_NUMBER
+        //                 //docker rmi ${registry}/${JOB_BASE_NAME}:latest
+        //             }
+        //         }
+        //     }
+        // }
 
     }
 }
