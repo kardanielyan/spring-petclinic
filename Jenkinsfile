@@ -39,7 +39,7 @@ pipeline {
         stage('SonarQube Analysis') {
             when { 
                 expression {
-                    return Deploy
+                    return RunSonar
                 }
             }
             steps {
@@ -64,6 +64,11 @@ pipeline {
         }
         
         stage("Quality Gate") {
+            when { 
+                expression {
+                    return RunGate
+                }
+            }
             steps {
 //                timeout(time: 1, unit: 'HOURS') {
                     // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
