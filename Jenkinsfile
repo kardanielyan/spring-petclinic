@@ -58,7 +58,7 @@ pipeline {
             //     input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
             //   }
             // }
-            when (${GIT_BRANCH} != 'dev') {
+            when ("${GIT_BRANCH}" != 'dev') {
                 // def qg = waitForQualityGate()
                 // if (qg.status != 'OK') {
                 //     error "Pipeline aborted due to quality gate failure: ${qg.status}"
