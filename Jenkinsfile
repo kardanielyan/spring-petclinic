@@ -36,48 +36,62 @@ pipeline {
                 sh "printenv"
             }
         }
-        stage('SonarQube Analysis') {
-            when { 
-                expression {
-                    return SonarQube Analysis
-                }
+
+    stage('Sonarqube') {
+        environment {
+            scannerHome = tool 'SonarQubeScanner'
+        }
+        steps {
+            withSonarQubeEnv('sonar') {
+                sh "${scannerHome}/bin/sonar-scanner"
             }
-            steps {
-                when (BRANCH_NAME != 'dev') {
-                    withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar') {
-                        sh "mvn -B clean deploy sonar:sonar"
-                    }
-                }
-
-                    //sh "${JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/bin/sonar-scanner " +
-                    //"-Dsonar.host.url=http://192.168.56.110:9000/ " +
-                    //"-Dsonar.projectName=${JOB_BASE_NAME} " +
-                    //"-Dsonar.projectVersion=1.$BUILD_NUMBER " +
-                    //"-Dsonar.projectKey=${JOB_BASE_NAME}:app " //+
-                   // "-Dsonar.sources=. " +
-                   // "-Dsonar.projectBaseDir=${JENKINS_HOME}/workspace/K8s/K8s_test_pipeline/APP/"
-                    //'-Dsonar.language=html '
-
-                    //sh 'cat ${JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/conf/sonar-scanner.properties'
-                //}
+            timeout(time: 10, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
             }
         }
+    }
+//         stage('SonarQube Analysis') {
+//             when { 
+//                 expression {
+//                     return SonarQube Analysis
+//                 }
+//             }
+//             steps {
+//                 when (BRANCH_NAME != 'dev') {
+//                     withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar') {
+//                         sh "mvn -B clean deploy sonar:sonar"
+//                     }
+//                 }
+
+//                     //sh "${JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/bin/sonar-scanner " +
+//                     //"-Dsonar.host.url=http://192.168.56.110:9000/ " +
+//                     //"-Dsonar.projectName=${JOB_BASE_NAME} " +
+//                     //"-Dsonar.projectVersion=1.$BUILD_NUMBER " +
+//                     //"-Dsonar.projectKey=${JOB_BASE_NAME}:app " //+
+//                    // "-Dsonar.sources=. " +
+//                    // "-Dsonar.projectBaseDir=${JENKINS_HOME}/workspace/K8s/K8s_test_pipeline/APP/"
+//                     //'-Dsonar.language=html '
+
+//                     //sh 'cat ${JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/conf/sonar-scanner.properties'
+//                 //}
+//             }
+//         }
         
-        stage("Quality Gate") {
-            when { 
-                expression {
-                    return Quality Gate
-                }
-            }
-            steps {
-//                timeout(time: 1, unit: 'HOURS') {
-                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
-                    // true = set pipeline to UNSTABLE, false = don't
-                    // Requires SonarQube Scanner for Jenkins 2.7+
-                    waitForQualityGate abortPipeline: true
-//                }
-            }
-        }
+//         stage("Quality Gate") {
+//             when { 
+//                 expression {
+//                     return Quality Gate
+//                 }
+//             }
+//             steps {
+// //                timeout(time: 1, unit: 'HOURS') {
+//                     // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+//                     // true = set pipeline to UNSTABLE, false = don't
+//                     // Requires SonarQube Scanner for Jenkins 2.7+
+//                     waitForQualityGate abortPipeline: true
+// //                }
+//             }
+//         }
         stage('Docker Build') {
             steps{
                 script {
