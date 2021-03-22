@@ -53,7 +53,7 @@ pipeline {
     }
     stage("Sonarqube Quality Gate") {
         steps {
-            when (BRANCH_NAME != 'dev') {
+            when (${GIT_BRANCH} != 'dev') {
                 // def qg = waitForQualityGate()
                 // if (qg.status != 'OK') {
                 //     error "Pipeline aborted due to quality gate failure: ${qg.status}"
