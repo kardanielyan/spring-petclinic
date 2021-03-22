@@ -58,13 +58,15 @@ pipeline {
             //     input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
             //   }
             // }
-            when (env.GIT_BRANCH != 'dev') {
-                // def qg = waitForQualityGate()
-                // if (qg.status != 'OK') {
-                //     error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                // }
-                timeout(time: 1, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+            script {
+                when (env.GIT_BRANCH != 'dev') {
+                    // def qg = waitForQualityGate()
+                    // if (qg.status != 'OK') {
+                    //     error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                    // }
+                    timeout(time: 1, unit: 'MINUTES') {
+                        waitForQualityGate abortPipeline: true
+                    }
                 }
             }
         }
