@@ -52,13 +52,12 @@ pipeline {
         }
     }
     stage("Sonarqube Quality Gate") {
-
         steps {
-            script {
-              timeout(time: 1, unit: 'MINUTES') {
-                input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
-              }
-            }
+            // script {
+            //   timeout(time: 1, unit: 'MINUTES') {
+            //     input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
+            //   }
+            // }
             when (${GIT_BRANCH} != 'dev') {
                 // def qg = waitForQualityGate()
                 // if (qg.status != 'OK') {
