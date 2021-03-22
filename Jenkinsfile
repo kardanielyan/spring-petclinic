@@ -52,22 +52,18 @@ pipeline {
         }
     }
     stage("Sonarqube Quality Gate") {
+        when {
+            branch 'production'
+            environment name: 'DEPLOY_TO', value: 'production'
+        }
         steps {
             // script {
             //   timeout(time: 1, unit: 'MINUTES') {
             //     input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
             //   }
             // }
-            script {
-                when (env.GIT_BRANCH != 'dev') {
-                    // def qg = waitForQualityGate()
-                    // if (qg.status != 'OK') {
-                    //     error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                    // }
-                    timeout(time: 1, unit: 'MINUTES') {
-                        waitForQualityGate abortPipeline: true
-                    }
-                }
+            timeout(time: 1, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
             }
         }
     }
