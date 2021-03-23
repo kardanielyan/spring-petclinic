@@ -51,9 +51,9 @@ pipeline {
             ok "Run"
         }
         steps {
-            // catchError(buildResult: 'always', stageResult: 'aborted') {
-            //     sh "exit 1"
-            // }
+            catchError(buildResult: 'success', stageResult: 'aborted') {
+                sh "echo 'Tets'"
+            }
 
             withSonarQubeEnv('sonar') {
                 //sh 'mvn clean package sonar:sonar'
