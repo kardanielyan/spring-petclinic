@@ -41,16 +41,15 @@ pipeline {
         environment {
             scannerHome = tool 'sonar'
         }
-        when {
-            //triggeredBy "TimerTrigger"
-            //beforeInput true
-            branch 'master'
+        // when {
+        //     //triggeredBy "TimerTrigger"
+        //     //beforeInput true
+        //     branch 'master'
         }
         input {
             message "Run Sonarqube Analysis?"
             ok "Run"
         }
-
         steps {
             // catchError(buildResult: 'always', stageResult: 'aborted') {
             //     sh "exit 1"
@@ -66,10 +65,10 @@ pipeline {
         }
     }
     stage("Sonarqube Quality Gate") {
-        when {
-            //beforeInput true
-            branch 'master'
-        }
+        // when {
+        //     //beforeInput true
+        //     branch 'master'
+        // }
         input {
             message "Run Sonarqube Quality Gate?"
             ok "Run"
