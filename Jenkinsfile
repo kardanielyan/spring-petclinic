@@ -82,24 +82,19 @@ pipeline {
         }
     }
 
-
-
-        
-//         stage("Quality Gate") {
-//             when { 
-//                 expression {
-//                     return Quality Gate
-//                 }
-//             } 
-//             steps {
-// //                timeout(time: 1, unit: 'HOURS') {
-//                     // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
-//                     // true = set pipeline to UNSTABLE, false = don't
-//                     // Requires SonarQube Scanner for Jenkins 2.7+
-//                     waitForQualityGate abortPipeline: true
-// //                }
-//             }
-//         }
+    stage('Example') {
+        input {
+            message "Should we continue?"
+            ok "Yes, we should."
+            submitter "Karen"
+            parameters {
+                string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+            }
+        }
+        steps {
+            echo "Hello, ${PERSON}, nice to meet you."
+        }
+    }
         // stage('Docker Build') {
         //     steps{
         //         script {
