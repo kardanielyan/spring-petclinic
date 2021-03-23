@@ -41,6 +41,13 @@ pipeline {
         environment {
             scannerHome = tool 'sonar'
         }
+        when {
+            branch 'master'
+        }
+        input {
+            message "Run Sonarqube Analysis?"
+            ok "Run"
+        }
         steps {
             withSonarQubeEnv('sonar') {
                 //sh 'mvn clean package sonar:sonar'
@@ -53,12 +60,11 @@ pipeline {
     }
     stage("Sonarqube Quality Gate") {
         when {
-            beforeInput true
             branch 'master'
         }
         input {
-            message "Deploy to production?"
-            id "simple-input"
+            message "Run Sonarqube Quality Gate?"
+            ok "Run"
         }
         steps {
             // script {
@@ -72,6 +78,9 @@ pipeline {
         }
     }
     stage('DeployToProduction') {
+        when {
+            branch 'master'
+        }
         steps {
             input 'Deploy to Production?'
             milestone(1)
@@ -79,19 +88,19 @@ pipeline {
         }
     }
 
-    stage('Example') {
-        input {
-            message "Should we continue?"
-            ok "Yes, we should."
-            submitter "Karen"
-            parameters {
-                string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-            }
-        }
-        steps {
-            echo "Hello, ${PERSON}, nice to meet you."
-        }
-    }
+    // stage('Example') {
+    //     input {
+    //         message "Should we continue?"
+    //         ok "Yes, we should."
+    //         submitter "Admin"
+    //         parameters {
+    //             string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+    //         }
+    //     }
+    //     steps {
+    //         echo "Hello, ${PERSON}, nice to meet you."
+    //     }
+    // }
         // stage('Docker Build') {
         //     steps{
         //         script {
