@@ -42,11 +42,14 @@ pipeline {
             scannerHome = tool 'sonar'
         }
         when {
+            //triggeredBy "TimerTrigger"
+            beforeInput true
             branch 'master'
         }
         input {
             message "Run Sonarqube Analysis?"
             ok "Run"
+            aborted "Skip"
         }
         steps {
             withSonarQubeEnv('sonar') {
@@ -60,6 +63,7 @@ pipeline {
     }
     stage("Sonarqube Quality Gate") {
         when {
+            beforeInput true
             branch 'master'
         }
         input {
