@@ -45,7 +45,7 @@ pipeline {
         //     //triggeredBy "TimerTrigger"
         //     //beforeInput true
         //     branch 'master'
-        }
+        //}
         input {
             message "Run Sonarqube Analysis?"
             ok "Run"
