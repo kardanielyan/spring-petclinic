@@ -49,7 +49,8 @@ pipeline {
         input {
             message "Run Sonarqube Analysis?"
             ok "Run"
-            aborted "Skip"
+            cancel "Skip"
+
         }
         steps {
             withSonarQubeEnv('sonar') {
