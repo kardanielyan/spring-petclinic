@@ -49,8 +49,6 @@ pipeline {
         input {
             message "Run Sonarqube Analysis?"
             ok "Run"
-            cancel "Skip"
-
         }
         steps {
             withSonarQubeEnv('sonar') {
@@ -83,13 +81,15 @@ pipeline {
         }
     }
     stage('DeployToProduction') {
-        when {
-            branch 'master'
+        def deployToProduction = true
+        try{
+            input 'Deploy to Production'
+        }catch(e){
+            deployToProduction = false
         }
-        steps {
-            input 'Deploy to Production?'
-            milestone(1)
-            sh 'echo "Deploy"'
+
+        if(deployToProduction){
+            println "Deploying to production"
         }
     }
 
