@@ -52,9 +52,9 @@ pipeline {
         }
 
         steps {
-            catchError(buildResult: 'always', stageResult: 'aborted') {
-                sh "exit 1"
-            }
+            // catchError(buildResult: 'always', stageResult: 'aborted') {
+            //     sh "exit 1"
+            // }
 
             withSonarQubeEnv('sonar') {
                 //sh 'mvn clean package sonar:sonar'
