@@ -52,7 +52,7 @@ pipeline {
         }
 
         steps {
-            catchError(buildResult: 'SUCCESS', stageResult: 'aborted') {
+            catchError(buildResult: 'always', stageResult: 'aborted') {
                 sh "exit 1"
             }
 
