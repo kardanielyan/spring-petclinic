@@ -43,7 +43,7 @@ pipeline {
         }
         when {
             //triggeredBy "TimerTrigger"
-            beforeInput true
+            //beforeInput true
             branch 'master'
         }
         input {
@@ -67,7 +67,7 @@ pipeline {
     }
     stage("Sonarqube Quality Gate") {
         when {
-            beforeInput true
+            //beforeInput true
             branch 'master'
         }
         input {
