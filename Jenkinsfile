@@ -51,7 +51,7 @@ pipeline {
             ok "Run"
         }
         steps {
-            catchError(buildResult: 'success', stageResult: 'aborted') {
+            catchError(buildResult: 'success', stageResult: 'success') {
                 sh "echo 'Tets'"
             }
 
