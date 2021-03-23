@@ -81,15 +81,8 @@ pipeline {
         }
     }
     stage('DeployToProduction') {
-        def deployToProduction = true
-        try{
-            input 'Deploy to Production'
-        }catch(e){
-            deployToProduction = false
-        }
-
-        if(deployToProduction){
-            println "Deploying to production"
+        steps {
+            echo "Hi"
         }
     }
 
