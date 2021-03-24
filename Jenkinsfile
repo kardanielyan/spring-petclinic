@@ -37,22 +37,19 @@ pipeline {
             }
         }
 
-    stage('Sonarqube Analysis') {
+    stage("Sonarqube Scan") {
+        // when {
+        //     //beforeInput true
+        //     branch 'master'
+        // }
         environment {
             scannerHome = tool 'sonar'
         }
-        // when {
-        //     //triggeredBy "TimerTrigger"
-        //     //beforeInput true
-        //     branch 'master'
-        //}
-        input {
-            message "Run Sonarqube Analysis?"
-            ok "Run"
-        }
         steps {
-            catchError(buildResult: 'success', stageResult: 'success') {
-                sh "echo 'Tets'"
+            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                timeout(time: 1, unit: 'MINUTES') {
+                    input(id: "Sonarqube", message: "Run Sonarqube Scan?", ok: 'Run')
+                }
             }
 
             withSonarQubeEnv('sonar') {
@@ -61,24 +58,6 @@ pipeline {
                     "-Dsonar.projectName=${JOB_BASE_NAME} " +
                     "-Dsonar.projectVersion=1.$BUILD_NUMBER " +
                     "-Dsonar.projectKey=${JOB_BASE_NAME}:app "
-            }
-        }
-    }
-    stage("Sonarqube Quality Gate") {
-        // when {
-        //     //beforeInput true
-        //     branch 'master'
-        // }
-        // input {
-        //     message "Run Sonarqube Quality Gate?"
-        //     ok "Run"
-        // }
-
-        steps {
-            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                timeout(time: 1, unit: 'MINUTES') {
-                    input(id: "Deploy Gate", message: "Run Sonarqube Quality Gate?", ok: 'Run')
-                }
             }
 
             timeout(time: 1, unit: 'MINUTES') {
