@@ -69,18 +69,17 @@ pipeline {
         //     //beforeInput true
         //     branch 'master'
         // }
-        timeout(time: 60, unit: 'SECONDS') {
-            input {
-                message "Run Sonarqube Quality Gate?"
-                ok "Run"
-            }
-        }
+        // input {
+        //     message "Run Sonarqube Quality Gate?"
+        //     ok "Run"
+        // }
+
         steps {
-            // script {
-            //   timeout(time: 1, unit: 'MINUTES') {
-            //     input(id: "Deploy Gate", message: "Deploy ${params.project_name}?", ok: 'Deploy')
-            //   }
-            // }
+
+              timeout(time: 1, unit: 'MINUTES') {
+                input(id: "Deploy Gate", message: "Deploy?", ok: 'Deploy')
+              }
+
             timeout(time: 1, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
             }
