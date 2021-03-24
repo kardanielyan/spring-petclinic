@@ -69,9 +69,11 @@ pipeline {
         //     //beforeInput true
         //     branch 'master'
         // }
-        input {
-            message "Run Sonarqube Quality Gate?"
-            ok "Run"
+        timeout(time: 60, unit: 'SECONDS') {
+            input {
+                message "Run Sonarqube Quality Gate?"
+                ok "Run"
+            }
         }
         steps {
             // script {
