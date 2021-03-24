@@ -75,10 +75,9 @@ pipeline {
         // }
 
         steps {
-
-              timeout(time: 1, unit: 'MINUTES') {
-                input(id: "Deploy Gate", message: "Deploy?", ok: 'Deploy')
-              }
+            timeout(time: 1, unit: 'MINUTES') {
+            input(id: "Deploy Gate", message: "Run Sonarqube Quality Gate?", ok: 'Run')
+            }
 
             timeout(time: 1, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
