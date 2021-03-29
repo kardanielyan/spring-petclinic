@@ -46,7 +46,7 @@ pipeline {
             scannerHome = tool 'sonar'
         }
         steps {
-            catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') {
+            catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                 timeout(time: 1, unit: 'MINUTES') {
                     input(id: "Sonarqube", message: "Run Sonarqube Scan?", ok: 'Run')
                 }
@@ -61,10 +61,9 @@ pipeline {
         }
         post{
             success { 
-                timeout(time: 2, unit: 'MINUTES') {
-                    echo "Sonar Status"
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
-                waitForQualityGate abortPipeline: true
             }
         }
     }
