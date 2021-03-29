@@ -62,9 +62,7 @@ pipeline {
         post{
             success {
                 retry(3) {
-                    timeout(time: 1, unit: 'MINUTES') {
                         waitForQualityGate abortPipeline: true
-                    }
                 }
             }
         }
