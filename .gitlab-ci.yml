@@ -1,0 +1,26 @@
+stages:
+  - Compile Build
+  - Run Tests
+
+Compile Build:
+  stage: Compile Build
+  script:
+    - mvn -B -DskipTests clean package
+  artifacts:
+    expire_in: 24 hour
+    paths:
+      - "*.jar"
+      - "*.war"
+  only:
+    refs:
+      - branches
+      - merge_requests
+
+
+Run Unit Tests:
+  script:
+    - mvn test
+  only:
+    refs:
+      - branches
+      - merge_requests
