@@ -59,9 +59,11 @@ pipeline {
                     "-Dsonar.projectKey=${JOB_BASE_NAME}:app "
             }
         }
-        post {
-            timeout(time: 3, unit: 'MINUTES') {
-                waitForQualityGate abortPipeline: true
+        post{
+            success { 
+                timeout(time: 3, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
     }
