@@ -21,16 +21,16 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        // stage('Test') {
-        //     steps {
-        //         sh 'mvn test'
-        //     }
-        //     post {
-        //         always {
-        //             junit 'target/surefire-reports/*.xml'
-        //         }
-        //     }
-        // }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
         stage("Env Variables") {
             steps {
                 sh "printenv"
@@ -62,13 +62,15 @@ pipeline {
         post{
             success {
                 sleep(time: 15, unit: "SECONDS")
-                waitForQualityGate abortPipeline: true
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
     }
     stage('DeployToProduction') {
         steps {
-            echo "Hi"
+            echo "DeployToProduction"
         }
     }
 
