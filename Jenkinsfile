@@ -61,9 +61,8 @@ pipeline {
         }
         post{
             success {
-                retry(3) {
-                        waitForQualityGate abortPipeline: true
-                }
+                sleep(time: 15, unit: "SECONDS")
+                waitForQualityGate abortPipeline: true
             }
         }
     }
