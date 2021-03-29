@@ -47,7 +47,7 @@ pipeline {
         }
         steps {
             catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') {
-                timeout(time: 2, unit: 'MINUTES') {
+                timeout(time: 1, unit: 'MINUTES') {
                     input(id: "Sonarqube", message: "Run Sonarqube Scan?", ok: 'Run')
                 }
                 withSonarQubeEnv('sonar') {
@@ -61,7 +61,7 @@ pipeline {
         }
         post{
             success { 
-                timeout(time: 3, unit: 'MINUTES') {
+                timeout(time: 2, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
