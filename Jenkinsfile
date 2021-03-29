@@ -46,7 +46,7 @@ pipeline {
             scannerHome = tool 'sonar'
         }
         steps {
-            catchError(buildResult: 'SUCCESS', stageResult: 'aborted') {
+            catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') {
                 timeout(time: 2, unit: 'MINUTES') {
                     input(id: "Sonarqube", message: "Run Sonarqube Scan?", ok: 'Run')
                 }
