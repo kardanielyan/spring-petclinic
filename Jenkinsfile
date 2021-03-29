@@ -46,22 +46,21 @@ pipeline {
             scannerHome = tool 'sonar'
         }
         steps {
-            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                timeout(time: 1, unit: 'MINUTES') {
+            catchError(buildResult: 'SUCCESS', stageResult: 'aborted') {
+                timeout(time: 2, unit: 'MINUTES') {
                     input(id: "Sonarqube", message: "Run Sonarqube Scan?", ok: 'Run')
                 }
+            }
+            withSonarQubeEnv('sonar') {
+                //sh 'mvn clean package sonar:sonar'
+                sh "${scannerHome}/bin/sonar-scanner " +
+                    "-Dsonar.projectName=${JOB_BASE_NAME} " +
+                    "-Dsonar.projectVersion=1.$BUILD_NUMBER " +
+                    "-Dsonar.projectKey=${JOB_BASE_NAME}:app "
+            }
 
-                withSonarQubeEnv('sonar') {
-                    //sh 'mvn clean package sonar:sonar'
-                    sh "${scannerHome}/bin/sonar-scanner " +
-                        "-Dsonar.projectName=${JOB_BASE_NAME} " +
-                        "-Dsonar.projectVersion=1.$BUILD_NUMBER " +
-                        "-Dsonar.projectKey=${JOB_BASE_NAME}:app "
-                }
-
-                timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
+            timeout(time: 3, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
             }
         }
     }
