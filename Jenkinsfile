@@ -62,8 +62,9 @@ pipeline {
         post{
             success { 
                 timeout(time: 2, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                    echo "Sonar Status"
                 }
+                waitForQualityGate abortPipeline: true
             }
         }
     }
