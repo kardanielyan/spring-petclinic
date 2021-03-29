@@ -60,9 +60,11 @@ pipeline {
             }
         }
         post{
-            success { 
-                timeout(time: 1, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+            success {
+                retry(3) {
+                    timeout(time: 1, unit: 'MINUTES') {
+                        waitForQualityGate abortPipeline: true
+                    }
                 }
             }
         }
